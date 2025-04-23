@@ -1,0 +1,108 @@
+# Uncomment the next line to define a global platform for your project
+platform :ios, '12.0'
+
+target 'testPod' do
+  # Comment the next line if you don't want to use dynamic frameworks
+  use_frameworks!
+
+  # FLAD
+  pod 'FLAD'
+
+  # 以下按需导入
+  
+  # 穿山甲
+  # pod 'FLAD/FLAdCsjAdapter'
+  
+  # 优量汇
+  # pod 'FLAD/FLAdGdtAdapter'
+  
+  # 快手联盟
+  # pod 'FLAD/FLAdKsAdapter'
+  
+  # 百度
+  # pod 'FLAD/FLAdBaiduAdapter'
+  
+  # 京准通
+  # pod 'FLAD/FLAdJztAdapter'
+  
+  # 汇盈
+  # pod 'FLAD/FLAdHrAdapter'
+  
+  # 天目
+  # pod 'FLAD/FLAdTmAdapter'
+  
+  # 章鱼
+  # pod 'FLAD/FLAdZyAdapter'
+  
+  # 优推
+  # pod 'FLAD/FLAdYtAdapter'
+  
+  # 科大讯飞
+  # pod 'FLAD/FLAdKdxfAdapter'
+  
+  # Beizi
+  # pod 'FLAD/FLAdBeiziAdapter'
+  
+  # Meishu
+  # pod 'FLAD/FLAdMsAdapter'
+  
+  # Sigmob
+  # pod 'FLAD/FLAdSigmobAdapter'
+  
+  # Mintegral
+  # pod 'FLAD/FLAdMtgAdapter'
+  
+  # Pangle
+  # pod 'FLAD/FLAdPangleAdapter'
+  
+  # AdMob
+  # pod 'FLAD/FLAdMobAdapter'
+  
+  # Meta
+  # pod 'FLAD/FLAdMetaAdapter'
+  
+  # Vungle
+  # pod 'FLAD/FLAdVungleAdapter'
+  
+  # Tanx
+  # pod 'FLAD/FLAdTbAdapter'
+  
+  # UnityAds
+  # pod 'FLAD/FLAdUnityAdapter'
+  
+  # Applovin
+  # pod 'FLAD/FLAdApplovinAdapter'
+
+  # Ironsource
+  # pod 'FLAD/FLAdIronsourceAdapter'
+
+  # Inmobi
+  # pod 'FLAD/FLAdInmobiAdapter'
+
+  # Bigo
+  # pod 'FLAD/FLAdBigoAdapter'
+  
+  # TopOn
+  # pod 'FLAD/FLAdTnAdapter'
+  
+  # TradPlus
+  # pod 'FLAD/FLAdTpAdapter'
+  
+
+end
+post_install do |installer|
+  installer.aggregate_targets.each do |target|
+    target.xcconfigs.each do |variant, xcconfig|
+      xcconfig_path = target.client_root + target.xcconfig_relative_path(variant)
+      IO.write(xcconfig_path, IO.read(xcconfig_path).gsub("DT_TOOLCHAIN_DIR", "TOOLCHAIN_DIR"))
+    end
+  end
+  installer.pods_project.targets.each do |target|
+    target.build_configurations.each do |config|
+      if config.base_configuration_reference.is_a? Xcodeproj::Project::Object::PBXFileReference
+        xcconfig_path = config.base_configuration_reference.real_path
+        IO.write(xcconfig_path, IO.read(xcconfig_path).gsub("DT_TOOLCHAIN_DIR", "TOOLCHAIN_DIR"))
+      end
+    end
+  end
+end
